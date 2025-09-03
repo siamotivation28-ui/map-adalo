@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Carte Google Maps</title>
     <style>
-      /* La carte prend toute la page */
+      /* La carte prend tout l’écran */
       #map {
         height: 100vh;
         width: 100%;
@@ -16,20 +16,21 @@
 
     <script>
       function initMap() {
-        // Exemple : Abidjan → Adjamé
+        // Départ et arrivée
         const depart = { lat: 5.3600372, lng: -4.0087048 };
         const arrivee = { lat: 5.3478643, lng: -4.0277643 };
 
+        // Création de la carte centrée sur le départ
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 14,
           center: depart,
         });
 
+        // Service et affichage de l’itinéraire
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer();
         directionsRenderer.setMap(map);
 
-        // Calcul et affichage de l'itinéraire
         directionsService.route(
           {
             origin: depart,
@@ -47,10 +48,9 @@
       }
     </script>
 
-    <!-- Script Google Maps avec ta clé -->
+    <!-- Clé Google Maps intégrée -->
     <script async
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeM8Ov6vMgi3TG9Lg8RDnFfkf43dh2mUw
-=initMap">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeM8Ov6vMgi3TG9Lg8RDnFfkf43dh2mUw&callback=initMap">
     </script>
   </body>
 </html>
