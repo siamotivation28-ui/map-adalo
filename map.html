@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
-  <script src="https://maps.googleapis.com/maps/api/js?key=TA_CLE_API&libraries=geometry"></script>
-  <script>
-    function getParam(name) {
-      return new URLSearchParams(window.location.search).get(name);
-    }
-
-    function initMap() {
-      const start_lat = parseFloat(getParam("start_lat"));
-      const start_lng = parseFloat(getParam("start_lng"));
-      const end_lat = parseFloat(getParam("end_lat"));
-      const end_lng = parseFloat(getParam("end_lng"));
-      const polyline = getParam("polyline");
-
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 14,
-        center: {lat: start_lat, lng: start_lng}
-      });
-
-      if (polyline) {
-        const path = google.maps.geometry.encoding.decodePath(polyline);
-        new google.maps.Polyline({
-          path: path,
-          geodesic: true,
-          strokeColor: "#4285F4",
-          strokeOpacity: 1.0,
-          strokeWeight: 4,
-          map: map
-        });
+  <head>
+    <meta charset="utf-8">
+    <title>Carte Google Maps</title>
+    <style>
+      /* La carte prend toute la page */
+      #map {
+        height: 100vh;
+        width: 100%;
       }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
 
-      new google.maps.Marker({ position: {lat: start_lat, lng: start_lng}, map: map, title: "Départ" });
-      new google.maps.Marker({ position: {lat: end_lat, lng: end_lng}, map: map, title: "Arrivée" });
-    }
-  </script>
-</head>
-<body onload="initMap()">
-  <div id="map" style="height:100vh; width:100%"></div>
-</body>
+    <script>
+      function initMap() {
+        // Exemple : Abidjan → Adjamé
+        const depart = { lat: 5.3600372, lng: -4.0087048 };
+        const arrivee = { lat: 5.3478643, lng: -4.0277643 };
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: depart,
+        });
+
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        // Calcul et affichage de l'itinéraire
+        directionsService.route(
+          {
+            origin: depart,
+            destination: arrivee,
+            travelMode: google.maps.TravelMode.DRIVING,
+          },
+          (response, status) => {
+            if (status === "OK") {
+              directionsRenderer.setDirections(response);
+            } else {
+              alert("Erreur Directions: " + status);
+            }
+          }
+        );
+      }
+    </script>
+
+    <!-- Script Google Maps avec ta clé -->
+    <script async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeM8Ov6vMgi3TG9Lg8RDnFfkf43dh2mUw
+=initMap">
+    </script>
+  </body>
 </html>
